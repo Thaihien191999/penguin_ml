@@ -6,6 +6,10 @@ import seaborn as sns
 st.title("Palmer's Penguins")
 st.markdown('Use this Streamlit app to make your own scatterplot about penguins!')
 
+password_guess = st.text_input('What is the Password?')
+if password_guess != 'streamlit_password':
+st.stop()
+
 penguin_file = st.file_uploader(
 'Select Your Local Penguins CSV (default provided)')
 if penguin_file is not None:
