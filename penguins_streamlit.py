@@ -13,11 +13,8 @@ password = st.secrets["passwords"]["admin_password"]
 user_password = st.text_input("Enter the password", type="password")
 
 # Kiểm tra mật khẩu người dùng nhập có đúng không
-if user_password == password:
-    st.success("You have access to the app!")
-    # Tiếp tục mã ứng dụng của bạn ở đây
-else:
-    st.error("Incorrect password. Please try again.")
+if user_password != password:
+    st.stop()
 
 penguin_file = st.file_uploader(
 'Select Your Local Penguins CSV (default provided)')
