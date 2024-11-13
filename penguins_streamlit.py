@@ -1,16 +1,38 @@
 import streamlit as st
-import seaborn as sns
-import matplotlib.pyplot as plt
 import pandas as pd
-import pickle
-st.title('IU MINH ĐỨT')
-st.write("This app uses 6 inputs to predict the species of penguin using "
-"a model built on the Palmer's Penguin's dataset. Use the form below"
-" to get started!")
-penguin_df = pd.read_csv('penguins.csv')
-rf_pickle = open('random_forest_penguin.pickle', 'rb')
-map_pickle = open('output_penguin.pickle', 'rb')
-rfc = pickle.load(rf_pickle)
-unique_penguin_mapping = pickle.load(map_pickle)
-rf_pickle.close()
-map_pickle.close()
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+st.title("Palmer's Penguins")
+st.markdown('Use this Streamlit app to make your own scatterplot about penguins!')
+
+penguin_file = st.file_uploader(
+'Select Your Local Penguins CSV (default provided)')
+if penguin_file is not None:
+    penguins_df = pd.read_csv(penguin_file)
+else:
+    penguins_df = pd.read_csv('penguins.csv')
+
+selected_x_var = st.selectbox('What do want the x variable to be?',
+['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g'])
+selected_y_var = st.selectbox('What about the y?',
+['bill_depth_mm', 'bill_length_mm', 'flipper_length_mm', 'body_mass_g'])
+
+selected_gender = st.selectbox('What gender do you want to filter for?',
+['all penguins', 'malepenguins', 'female penguins'])
+
+if selected_gender == 'male penguins': penguins_df = penguins_df[penguins_df['sex'] == 'male']
+elif selected_gender == 'female penguins': penguins_df = penguins_df[penguins_df['sex'] == 'female']
+else:
+    pass
+
+fig, ax = plt.subplots()
+
+ax = sns.scatterplot(x=penguins_df[selected_x_var],
+y=penguins_df[selected_y_var],
+hue=penguins_df['species'])
+plt.xlabel(selected_x_var)
+plt.ylabel(selected_y_var)
+plt.title("Scatterplot of Palmer's Penguins: {}".
+format(selected_gender))
+st.pyplot(fig)
