@@ -6,9 +6,18 @@ import seaborn as sns
 st.title("Palmer's Penguins")
 st.markdown('Use this Streamlit app to make your own scatterplot about penguins!')
 
-password_guess = st.text_input('What is the Password?')
-if password_guess != st.secrets["password"]:
-    st.stop()
+# Truy cập mật khẩu từ Streamlit Secrets
+password = st.secrets["passwords"]["admin_password"]
+
+# Yêu cầu người dùng nhập mật khẩu
+user_password = st.text_input("Enter the password", type="password")
+
+# Kiểm tra mật khẩu người dùng nhập có đúng không
+if user_password == password:
+    st.success("You have access to the app!")
+    # Tiếp tục mã ứng dụng của bạn ở đây
+else:
+    st.error("Incorrect password. Please try again.")
 
 penguin_file = st.file_uploader(
 'Select Your Local Penguins CSV (default provided)')
